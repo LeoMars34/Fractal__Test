@@ -1,13 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+@font-face {
+    font-family: 'TTTravels-DemiBold';
+    src: local('TTTravels-DemiBold'),
+        url('./fonts/TTTravels-DemiBold.ttf') format('truetype');
+}
+.font-TTTravels-script {
+    font-family: 'TTTravels-DemiBold';
+}
+.container__main {
+    padding: 60px;
+    box-shadow: 0 0 25px black;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    justify-content: center;
+    height: 700px;
+    width: 900px;
+}
+.container__step {
+    padding: 60px;
+    box-shadow: 0 0 25px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 820px;
+    width: 900px;
+}
+.container__modal {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.5);
+}
+.content__modal {
+    width: 460px;
+    height: 310px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    box-shadow: 0 0 5px black;
+    border-radius: 15px;
+}
+.content__modal_sucsess {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 50px;
+}
+.content {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 850px;
+
+    left: 0;
+}
+.buttonMain {
+    transition: 0.5s;
+    width: 85px;
+    height: 45px;
+    color: #5558fa;
+    border: 2px solid #5558fa;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.buttonMain:hover,
+.btnAdd:hover {
+    transition: 0.5s;
+    color: #fff;
+    background-color: #5558fa;
+}
+.container__button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+input {
+    border: none;
+    box-shadow: 0 0 3px rgb(131, 131, 131);
+    border-radius: 5px;
+    padding: 10px;
+}
+input:focus {
+    outline: none;
+}
+.input__main {
+    width: 400px;
+    height: 44px;
+}
+.input__step {
+    width: 300px;
+    height: 44px;
+}
+select {
+    border: none;
+    box-shadow: 0 0 3px rgb(131, 131, 131);
+    border-radius: 5px;
+    width: 300px;
+    height: 44px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+progress {
+    height: 5px;
+    width: 100%;
+    position: relative;
+}
+.progress {
+    position: relative;
+    top: 0;
+    height: 100%;
+}
+#my-progress {
+    background-color: #f0f0f0;
+}
+
+#my-progress::-webkit-progress-bar {
+    background-color: #f0f0f0;
+}
+
+#my-progress::-webkit-progress-value {
+    background-color: #5558fa;
+}
+.span {
+    position: relative;
+    top: -15px;
+    left: -5px;
+    width: 690px;
+    display: flex;
+    height: 30px;
+    justify-content: space-between;
+}
+.span__gray {
+    color: #a6a6a6;
+    font-size: 1.3em;
+}
+.span__target {
+    font-size: 1.3em;
+}
+.target {
+    font-size: 1em;
+    color: rgb(255, 255, 255);
+    position: relative;
+    left: -14px;
+    top: -3px;
+}
+.target__done {
+    font-size: 0.6em;
+    color: rgb(255, 255, 255);
+    position: relative;
+    left: -15px;
+    top: -5px;
+}
+.group {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+}
+.btnDelete {
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 10px;
+}
+.btnAdd {
+    width: 44px;
+    height: 44px;
+    transition: 0.5s;
+    color: #5558fa;
+    border: 2px solid #5558fa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+.btnDelete:hover {
+    transition: 0.5s;
+    color: red;
+}
+.container__step_step3 {
+    height: 500px;
+}
+.textArea {
+    padding: 50px;
+}
+.count {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    right: 0;
+}
+.sucsess {
+    font-size: 3em;
+    color: #05ae71;
+}
+.red_border {
+    border: 2px solid red;
+}
+.advantages {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
 }
