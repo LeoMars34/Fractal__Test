@@ -3,14 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 export function Step2() {
     const navigate = useNavigate();
-    const [checkbox, setCheckbox] = useState([1, 2, 3]);
-    const [checkboxOn, setCheckboxOn] = useState(() => {
-        if (localStorage.getItem('checkbox')) {
-            return localStorage.getItem('checkbox').split(',');
-        } else {
-            return [];
-        }
-    });
     const [advantages, setAdvantages] = useState(() => {
         if (localStorage.getItem('advantages')) {
             return localStorage.getItem('advantages').split(',');
@@ -18,6 +10,27 @@ export function Step2() {
             return ['', '', ''];
         }
     });
+    const initialArray = [1, 2, 3];
+    const [checkboxes, setCheckboxes] = useState(() => {
+        if (localStorage.getItem('checkboxes')) {
+            return JSON.parse(localStorage.getItem('checkboxes'));
+        } else {
+            return false;
+        }
+    });
+    const handleCheckboxChange = (index) => {
+        const updatedCheckboxes = [...checkboxes];
+        updatedCheckboxes[index] = !updatedCheckboxes[index];
+        setCheckboxes(updatedCheckboxes);
+    };
+    useEffect(() => {
+        localStorage.setItem('checkboxes', JSON.stringify(checkboxes));
+    }, [checkboxes]);
+
+    useEffect(() => {
+        const savedCheckboxes = JSON.parse(localStorage.getItem('checkboxes'));
+        setCheckboxes(savedCheckboxes || []);
+    }, []);
 
     function navigateToStep3() {
         let advantagesAll = document.querySelectorAll('.input__step');
@@ -28,16 +41,6 @@ export function Step2() {
             }
         }
         localStorage.setItem('advantages', advantagesArray);
-
-        // let checkboxAll = document.querySelectorAll('.checkbox');
-        // let checkboxArray = [];
-        // for (let i = 0; i < checkboxAll.length; i++) {
-        //     if (checkboxAll[i].checked) {
-        //         checkboxArray.push(checkboxAll[i].name);
-        //     }
-        // }
-        // setCheckboxOn(checkboxArray);
-        // localStorage.setItem('checkbox', checkboxArray);
         navigate('/Step3');
     }
     function back() {
@@ -49,24 +52,19 @@ export function Step2() {
     function btnDelete(e) {
         e.currentTarget.parentNode.remove();
     }
-    function changeCheckBox(e, i) {
-        console.log(e);
-        console.log(i);
-        if (e.target.checked && !checkboxOn.includes(i)) {
-            setCheckboxOn((prevState) => {
-                const newState = [...prevState, i];
-                return newState;
-            });
-        } else if (!e.target.checked && checkboxOn.includes(i)) {
-            setCheckboxOn((prevState) => {
-                const index = prevState.indexOf(i);
-                const newState = prevState.splice(index, 1);
-                return newState;
-            });
+    const [selectedValue, setSelectedValue] = useState('');
+    const handleRadioChange = (event) => {
+        setSelectedValue(event.target.value);
+    };
+    useEffect(() => {
+        const savedValue = localStorage.getItem('radioValue');
+        if (savedValue) {
+            setSelectedValue(savedValue);
         }
-        console.log(checkboxOn);
-        localStorage.setItem('checkbox', checkboxOn);
-    }
+    }, []);
+    useEffect(() => {
+        localStorage.setItem('radioValue', selectedValue);
+    }, [selectedValue]);
 
     return (
         <div className="container__step">
@@ -98,8 +96,8 @@ export function Step2() {
             <div className="content">
                 <div className="advantages">
                     Преимущества
-                    {advantages.map((i) => (
-                        <div key={i.id}>
+                    {advantages.map((i, index) => (
+                        <label key={index}>
                             <input
                                 className="input__step"
                                 type="text"
@@ -113,7 +111,7 @@ export function Step2() {
                             >
                                 <ion-icon name="trash-outline"></ion-icon>
                             </button>
-                        </div>
+                        </label>
                     ))}
                 </div>
                 <button onClick={addAdvantages} className="btnAdd">
@@ -121,41 +119,55 @@ export function Step2() {
                 </button>
 
                 <div className="group">
-                    Checkbox группа
-                    {checkbox.map((i) => (
-                        <div key={i.id}>
-                            {checkboxOn.includes(i) ? (
+                    <div className="group__flex">
+                        Checkbox группа
+                        {initialArray.map((number, index) => (
+                            <label className="checkbox" key={index}>
                                 <input
-                                    name={i}
-                                    onChange={(e) => {
-                                        changeCheckBox(e, i);
-                                    }}
-                                    className="checkbox"
+                                    style={{ marginRight: '10px' }}
                                     type="checkbox"
-                                    checked
+                                    checked={checkboxes[index] || false}
+                                    onChange={() => handleCheckboxChange(index)}
                                 />
-                            ) : (
-                                <input
-                                    name={i}
-                                    onChange={(e) => {
-                                        changeCheckBox(e, i);
-                                    }}
-                                    className="checkbox"
-                                    type="checkbox"
-                                />
-                            )}
-                            <span>{i}</span>
-                        </div>
-                    ))}
-                    Radio группа
-                    <div className="">
-                        <input name="1" type="radio" /> <span>1</span>
+                                {number}
+                            </label>
+                        ))}
                     </div>
-                    <div className="">
-                        <input name="1" type="radio" /> <span>2</span>
-                    </div>
-                    <div className="">
-                        <input name="1" type="radio" /> <span>3</span>
+                    <div className="group__flex">
+                        Radio группа
+                        <label>
+                            <input
+                                className="checkbox"
+                                type="radio"
+                                name="radioGroup"
+                                value="option1"
+                                checked={selectedValue === 'option1'}
+                                onChange={handleRadioChange}
+                            />
+                            1
+                        </label>
+                        <label>
+                            <input
+                                className="checkbox"
+                                type="radio"
+                                name="radioGroup"
+                                value="option2"
+                                checked={selectedValue === 'option2'}
+                                onChange={handleRadioChange}
+                            />
+                            2
+                        </label>
+                        <label>
+                            <input
+                                className="checkbox"
+                                type="radio"
+                                name="radioGroup"
+                                value="option3"
+                                checked={selectedValue === 'option3'}
+                                onChange={handleRadioChange}
+                            />
+                            3
+                        </label>
                     </div>
                 </div>
             </div>

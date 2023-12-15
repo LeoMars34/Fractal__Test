@@ -1,16 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Modal } from './Modal';
+import { sendProfile } from './Api';
 
 export function Step3() {
     const navigate = useNavigate();
     const [count, setCount] = useState();
-    const [message, setMessage] = useState();
+    const [message, setMessage] = useState(false);
+    const [sucsses, setSucsses] = useState(false);
     function back() {
         navigate(-1);
     }
     function countLength() {
         let length = document.getElementById('textarea').value;
+
         length = length.replace(/\s/g, '').length;
         if (length >= 200) {
             document.getElementById('textarea').value = document
@@ -19,13 +22,43 @@ export function Step3() {
         }
         setCount(length);
     }
-    function backToMain() {
-        setMessage(true);
+    function send() {
+        if (count === undefined || count === 0) {
+            document.getElementById('textarea').classList.add('red_border');
+            alert('Обязательное для заполнение поле');
+            return;
+        } else {
+            document.getElementById('textarea').classList.remove('red_border');
+            let formData = new FormData();
+            let email = localStorage.getItem('email');
+            formData.append('email', email);
+            formData.append('phone', localStorage.getItem('phone'));
+            formData.append('nickname', localStorage.getItem('nickname'));
+            formData.append('name', localStorage.getItem('name'));
+            formData.append('sername', localStorage.getItem('sername'));
+            formData.append('sex', localStorage.getItem('sex'));
+            formData.append('advantages', localStorage.getItem('advantages'));
+            formData.append('checkboxes', localStorage.getItem('checkboxes'));
+            formData.append('radioValue', localStorage.getItem('radioValue'));
+            formData.append('about', document.getElementById('textarea').value);
+            // sendProfile(formData).then((response) => {
+            //     if (response.error) {
+            //         setMessage(true);
+            //         setSucsses(false);
+            //     } else {
+            //         setMessage(true);
+            //         setSucsses(true);
+            //     }
+            // });
+            setSucsses(true);
+            setTimeout(() => {
+                setMessage(true);
+            }, 1000);
+        }
     }
-
     return (
         <div className="container__step container__step_step3">
-            {message ? <Modal /> : null}
+            {message !== false ? <Modal sucsses={sucsses} /> : null}
             <div className="progress">
                 <progress
                     className="progress__end"
@@ -60,13 +93,13 @@ export function Step3() {
                     </span>
                 </div>
             </div>
-            <div className="textArea">
-                О себе
+            <div>
+                <p>О себе</p>
                 <textarea
                     onInput={countLength}
                     id="textarea"
-                    cols="100"
-                    rows="10"
+                    cols=""
+                    rows=""
                 ></textarea>
                 <span className="count">{count}</span>
             </div>
@@ -74,7 +107,7 @@ export function Step3() {
                 <button className="buttonMain" onClick={back}>
                     Назад
                 </button>
-                <button onClick={backToMain} className="buttonMain">
+                <button onClick={send} className="buttonMain">
                     Отправить
                 </button>
             </div>

@@ -15,7 +15,6 @@ export function Main() {
         setUserEmail(localStorage.getItem('email'));
     }, []);
 
-    /*Валидация email*/
     function validateEmail(e) {
         let email = e.target;
         let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
